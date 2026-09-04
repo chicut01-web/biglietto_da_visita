@@ -112,7 +112,7 @@
       0 0 0 1px rgba(0, 0, 0, 0.6),
       0 0 35px -5px rgba(216, 178, 106, 0.12),
       inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
-    padding: 24px 22px 28px;
+    padding: 32px 22px 24px;
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -680,20 +680,6 @@
 <!-- ══ LA TESSERA / SMART CARD VIRTUALE ══ -->
 <main class="smart-card">
 
-  <!-- Top Bar: Badge NFC & Brand Tessera -->
-  <div class="card-top-bar">
-    <div class="card-brand">
-      <span class="chip-dot"></span>
-      <span>MO.D.A.V.I. SMART PASS</span>
-    </div>
-    <div class="card-nfc" title="Card Contactless">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
-        <path d="M6 8a6 6 0 0 1 0 8"/>
-        <path d="M10 5a10 10 0 0 1 0 14"/>
-        <path d="M14 2a14 14 0 0 1 0 20"/>
-      </svg>
-    </div>
-  </div>
 
   <!-- Profilo -->
   <header class="card-profile">
@@ -751,7 +737,6 @@
       </svg>
       <span>Condividi questo profilo</span>
     </button>
-    <p class="card-footer-meta" id="footerMeta">MO.D.A.V.I. APS-RA · Salerno & Roma</p>
   </footer>
 
 </main>
@@ -862,7 +847,6 @@ $('#nome').textContent = CONFIG.nome;
 $('#ruolo').textContent = CONFIG.ruolo;
 $('#azienda').textContent = CONFIG.azienda;
 $('#tagline').textContent = CONFIG.tagline;
-$('#footerMeta').textContent = `${CONFIG.azienda} · ${CONFIG.citta}`;
 
 /* Fallback Avatar */
 $('#photo').addEventListener('error', () => {
