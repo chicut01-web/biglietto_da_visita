@@ -717,29 +717,9 @@
       Politiche giovanili, terzo settore e fondi europei · Salerno / Roma
     </p>
 
-    <!-- Quick action buttons (Tel, WhatsApp, Mail, LinkedIn) -->
+    <!-- Quick action buttons (Tel, WhatsApp, Mail) -->
     <div class="quick-bar" id="quickBar"></div>
   </header>
-
-  <!-- Hero CTA: Salva in Rubrica -->
-  <button class="vcard-btn" id="saveContact" type="button" aria-label="Salva contatto in rubrica">
-    <div class="vcard-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-        <line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>
-      </svg>
-    </div>
-    <div class="vcard-info">
-      <div class="vcard-title">
-        Salva in Rubrica
-        <span class="vcard-badge">vCard</span>
-      </div>
-      <div class="vcard-desc">Tocca per salvare il contatto su iPhone o Android</div>
-    </div>
-    <div class="link-arrow">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </div>
-  </button>
 
   <!-- Stack Linktree -->
   <section class="links-stack" id="linksList" aria-label="Link ufficiali e progetti"></section>
@@ -795,9 +775,9 @@ const CONFIG = {
   shortUrl:  '',
 
   /* Recapiti: se lasci vuoto (''), il relativo pulsante rapido non viene mostrato */
-  tel:       '+39 06 8424 2188',   // Sostituire col numero diretto
-  whatsapp:  '',                   // Solo cifre con prefisso: es. '393401234567'
-  email:     'info@modavi.it',     // Email diretta o istituzionale
+  tel:       '+39 333 669 2229',
+  whatsapp:  '393336692229',
+  email:     'piemonte.francesco@gmail.com',
 
   /* LINKTREE: Pulsanti della card */
   links: [
@@ -818,21 +798,14 @@ const CONFIG = {
     {
       title: 'Europe Direct Salerno',
       desc:  'Punto di contatto ufficiale della Commissione Europea',
-      url:   'https://www.facebook.com/EuropeDirectSalerno/',
+      url:   'https://www.europedirectsalerno.it',
       badge: 'UE',
       icon:  'globe'
     },
     {
-      title: 'Docente UniSalerno',
-      desc:  'Docente a contratto presso l\'Università degli Studi di Salerno',
-      url:   'https://www.unisa.it',
-      badge: 'UniSa',
-      icon:  'book'
-    },
-    {
       title: 'Informagiovani Salerno',
       desc:  'Servizi per i giovani, orientamento e opportunità',
-      url:   'https://www.comune.salerno.it',
+      url:   'https://www.informagiovani.salerno.it/informagiovani/',
       badge: 'Servizi',
       icon:  'users'
     },
@@ -925,16 +898,6 @@ if (CONFIG.email) {
     label: `Invia email a ${CONFIG.nome}`
   });
 }
-const linkedinLink = CONFIG.links.find(l => l.icon === 'linkedin');
-if (linkedinLink) {
-  quicks.push({
-    name: 'LinkedIn',
-    icon: 'linkedin',
-    href: linkedinLink.url,
-    label: 'Profilo LinkedIn',
-    blank: true
-  });
-}
 
 $('#quickBar').innerHTML = quicks.map(q => `
   <a class="quick-btn" href="${q.href}" aria-label="${q.label}" ${q.blank ? 'target="_blank" rel="noopener"' : ''}>
@@ -964,56 +927,6 @@ $('#linksList').innerHTML = CONFIG.links.map(link => `
 /* Render Bio & Competenze */
 $('#bioText').innerHTML = CONFIG.bio.map(p => `<p>${p}</p>`).join('');
 $('#skillsTags').innerHTML = CONFIG.competenze.map(s => `<span class="skill-chip">${s}</span>`).join('');
-
-/* vCard 3.0 Generation */
-function esc(v) {
-  return String(v).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
-}
-
-function buildVCard() {
-  const parts = CONFIG.nome.trim().split(/\s+/);
-  const last  = parts.length > 1 ? parts.pop() : '';
-  const first = parts.join(' ');
-  const citta = CONFIG.citta.split(' · ')[0];
-
-  return [
-    'BEGIN:VCARD',
-    'VERSION:3.0',
-    'N:' + esc(last) + ';' + esc(first) + ';;;',
-    'FN:' + esc(CONFIG.nome),
-    'ORG:' + esc(CONFIG.azienda),
-    'TITLE:' + esc(CONFIG.ruolo),
-    'ROLE:' + esc(CONFIG.ruolo),
-    'TEL;TYPE=WORK,VOICE:' + esc(CONFIG.tel),
-    ...(CONFIG.whatsapp ? ['TEL;TYPE=CELL,VOICE:+' + esc(CONFIG.whatsapp)] : []),
-    'EMAIL;TYPE=INTERNET,WORK:' + esc(CONFIG.email),
-    ...CONFIG.links.map(l => (l.icon === 'linkedin' ? 'X-SOCIALPROFILE;TYPE=linkedin:' : 'URL:') + esc(l.url)),
-    'ADR;TYPE=WORK:;;;' + esc(citta) + ';;;Italia',
-    'NOTE:' + esc(CONFIG.tagline + ' · ' + CONFIG.competenze.join(', ')),
-    'REV:' + new Date().toISOString().replace(/\.\d+/, ''),
-    'END:VCARD'
-  ].join('\r\n') + '\r\n';
-}
-
-$('#saveContact').addEventListener('click', () => {
-  const vcf  = buildVCard();
-  const file = CONFIG.nome.replace(/\s+/g, '_') + '.vcf';
-  const a    = document.createElement('a');
-
-  if ('download' in a) {
-    const url = URL.createObjectURL(new Blob([vcf], { type: 'text/vcard;charset=utf-8' }));
-    a.href = url;
-    a.download = file;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  } else {
-    window.open('data:text/vcard;charset=utf-8,' + encodeURIComponent(vcf));
-  }
-
-  showToast('vCard scaricata! Aprila per salvare il contatto.');
-});
 
 /* Toast Notification Helper */
 function showToast(text) {
