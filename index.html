@@ -9,22 +9,24 @@
 
 <!-- ⬇⬇ SOSTITUIRE dopo il deploy: l'anteprima WhatsApp/social legge solo questi URL assoluti ⬇⬇ -->
 <meta property="og:url" content="https://francesco-piemonte.vercel.app/">
-<meta property="og:image" content="https://francesco-piemonte.vercel.app/og.png">
-<meta name="twitter:image" content="https://francesco-piemonte.vercel.app/og.png">
+<meta property="og:image" content="https://francesco-piemonte.vercel.app/og.jpg">
+<meta property="og:image:secure_url" content="https://francesco-piemonte.vercel.app/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Francesco Piemonte — Presidente Nazionale MO.D.A.V.I. APS-RA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://francesco-piemonte.vercel.app/og.jpg">
 <link rel="canonical" href="https://francesco-piemonte.vercel.app/">
 <!-- ⬆⬆ fine blocco da sostituire ⬆⬆ -->
 
 <meta property="og:type" content="profile">
 <meta property="og:locale" content="it_IT">
-<meta property="og:site_name" content="Francesco Piemonte — Smart Card">
+<meta property="og:site_name" content="Francesco Piemonte">
 <meta property="og:title" content="Francesco Piemonte — Presidente Nazionale MO.D.A.V.I. APS-RA">
-<meta property="og:description" content="Tessera digitale, link ufficiali e salvataggio rapido del contatto in rubrica.">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/png">
+<meta property="og:description" content="Tessera digitale, recapiti ufficiali e salvataggio rapido del contatto in rubrica.">
 <meta property="profile:first_name" content="Francesco">
 <meta property="profile:last_name" content="Piemonte">
-<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Francesco Piemonte — Smart Card Digitale">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307090C'/%3E%3Ctext x='32' y='43' font-family='Helvetica,Arial' font-size='28' font-weight='700' fill='%23D8B26A' text-anchor='middle'%3EFP%3C/text%3E%3C/svg%3E">
@@ -794,6 +796,10 @@ const CONFIG = {
   citta:     'Salerno · Roma',
   tagline:   'Politiche giovanili, terzo settore e fondi europei.',
 
+  /* Link breve opzionale per la condivisione (es. 'https://dub.sh/fpiemonte' o dominio breve personalizzato).
+     Se lasciato vuoto (''), usa in automatico l'indirizzo pulito della pagina */
+  shortUrl:  '',
+
   /* Recapiti: se lasci vuoto (''), il relativo pulsante rapido non viene mostrato */
   tel:       '+39 06 8424 2188',   // Sostituire col numero diretto
   whatsapp:  '',                   // Solo cifre con prefisso: es. '393401234567'
@@ -1024,18 +1030,18 @@ function showToast(text) {
 
 /* Condivisione Profilo */
 $('#shareBtn').addEventListener('click', async () => {
-  const shareData = {
-    title: `${CONFIG.nome} — ${CONFIG.azienda}`,
-    text: `${CONFIG.nome}, ${CONFIG.ruolo} (${CONFIG.azienda})`,
-    url: window.location.href
-  };
+  // Ottiene l'URL più compatto e pulito possibile (senza hash né parametri URL sporchi)
+  const cleanUrl = window.location.origin + window.location.pathname;
+  const shareUrl = (CONFIG.shortUrl && CONFIG.shortUrl.trim() !== '') ? CONFIG.shortUrl.trim() : cleanUrl;
 
   try {
     if (navigator.share) {
-      await navigator.share(shareData);
+      // Inviando SOLO l'URL (senza aggiungere paragrafi di testo), WhatsApp inserisce
+      // solo il link compatto nella chat e genera subito sotto l'anteprima grande con foto!
+      await navigator.share({ url: shareUrl });
       return;
     }
-    await navigator.clipboard.writeText(window.location.href);
+    await navigator.clipboard.writeText(shareUrl);
     showToast('Link copiato negli appunti!');
   } catch (err) {
     if (err && err.name === 'AbortError') return;
