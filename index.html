@@ -3,8 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Francesco Piemonte</title>
-<meta name="description" content="">
 <meta name="theme-color" content="#07090C">
 
 <!-- ⬇⬇ SOSTITUIRE dopo il deploy: l'anteprima WhatsApp/social legge solo questi URL assoluti ⬇⬇ -->
@@ -14,7 +12,6 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Francesco Piemonte">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://francesco-piemonte.vercel.app/og.jpg">
 <link rel="canonical" href="https://francesco-piemonte.vercel.app/">
@@ -22,8 +19,6 @@
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="it_IT">
-<meta property="og:title" content="&#8203;">
-<meta name="twitter:title" content="&#8203;">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307090C'/%3E%3Ctext x='32' y='43' font-family='Helvetica,Arial' font-size='28' font-weight='700' fill='%23D8B26A' text-anchor='middle'%3EFP%3C/text%3E%3C/svg%3E">
 
@@ -886,6 +881,7 @@ const getSvg = (name, strokeWidth = 1.9) =>
   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ICONS.globe}</svg>`;
 
 /* Render Dati Header */
+document.title = CONFIG.nome;
 $('#nome').textContent = CONFIG.nome;
 $('#ruolo').textContent = CONFIG.ruolo;
 $('#azienda').textContent = CONFIG.azienda;
