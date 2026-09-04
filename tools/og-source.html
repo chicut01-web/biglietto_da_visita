@@ -1,195 +1,159 @@
 <!doctype html>
 <html lang="it"><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600;12..96,75..100,700;12..96,75..100,800&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,700;12..96,75..100,800&family=IBM+Plex+Mono:wght@500;600&family=Instrument+Sans:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     width: 1200px;
     height: 630px;
     background: #06080B;
-    color: #E8EDF3;
+    color: #FFFFFF;
     overflow: hidden;
     font-family: "Instrument Sans", system-ui, -apple-system, sans-serif;
     position: relative;
   }
 
-  /* Foto a tutto schermo a destra con sfumatura morbida verso sinistra */
-  .photo-bg {
+  /* La foto di Francesco prende il 90% dell'intera larghezza e tutta l'altezza */
+  .photo-container {
     position: absolute;
     top: 0;
     right: 0;
-    width: 620px;
+    width: 940px;
     height: 630px;
     z-index: 1;
   }
-  .photo-bg img {
+
+  .photo-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 12%;
+    object-position: center 15%;
     display: block;
   }
-  .photo-gradient {
+
+  /* Sfumatura leggera a sinistra per fondere con eleganza */
+  .vignette {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(90deg, #06080B 0%, rgba(6, 8, 11, 0.92) 15%, rgba(6, 8, 11, 0.4) 45%, transparent 75%),
-      linear-gradient(180deg, rgba(6, 8, 11, 0.3) 0%, transparent 40%, rgba(6, 8, 11, 0.85) 100%);
+      linear-gradient(90deg, #06080B 0%, rgba(6, 8, 11, 0.96) 8%, rgba(6, 8, 11, 0.3) 35%, transparent 65%),
+      linear-gradient(180deg, rgba(6, 8, 11, 0.25) 0%, transparent 40%, rgba(6, 8, 11, 0.85) 100%);
   }
 
-  /* Glow e atmosfera */
-  .glow {
+  /* Glow caldo oro */
+  .ambient-glow {
     position: absolute;
-    top: 10%;
-    left: -10%;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(216, 178, 106, 0.18) 0%, rgba(76, 106, 138, 0.08) 50%, transparent 70%);
+    top: -25%;
+    left: -15%;
+    width: 750px;
+    height: 750px;
+    background: radial-gradient(circle, rgba(216, 178, 106, 0.20) 0%, rgba(76, 106, 138, 0.08) 50%, transparent 70%);
     pointer-events: none;
     z-index: 2;
   }
 
-  /* Griglia sottile a sinistra */
-  .grid {
+  /* Cornice ultra-luxury perimetrale */
+  .gold-frame {
     position: absolute;
-    inset: 0;
-    width: 600px;
-    background-image:
-      linear-gradient(rgba(216, 178, 106, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(216, 178, 106, 0.04) 1px, transparent 1px);
-    background-size: 38px 38px;
-    z-index: 2;
-  }
-
-  /* Cornice ultra-luxury */
-  .frame {
-    position: absolute;
-    inset: 22px;
-    border: 1px solid rgba(216, 178, 106, 0.28);
+    inset: 18px;
+    border: 1px solid rgba(216, 178, 106, 0.35);
     border-radius: 20px;
     pointer-events: none;
     z-index: 4;
   }
 
-  /* Contenuto a sinistra */
-  .content {
+  /* Informazioni compatte ed eleganti in basso a sinistra */
+  .overlay-info {
     position: relative;
     z-index: 3;
-    width: 640px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 0 0 0 68px;
+    justify-content: space-between;
+    padding: 46px 54px;
+    width: 440px;
   }
 
-  .badge-tag {
+  .badge-official {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     align-self: flex-start;
-    padding: 7px 16px;
+    padding: 8px 18px;
     border-radius: 999px;
-    background: rgba(216, 178, 106, 0.12);
-    border: 1px solid rgba(216, 178, 106, 0.38);
+    background: rgba(10, 14, 21, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(216, 178, 106, 0.45);
     color: #D8B26A;
     font-family: "IBM Plex Mono", monospace;
     font-size: 13px;
     font-weight: 600;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    margin-bottom: 22px;
   }
-  .badge-tag::before {
+  .badge-official::before {
     content: "";
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: #D8B26A;
-    box-shadow: 0 0 8px #D8B26A;
+    background: #10B981;
+    box-shadow: 0 0 10px #10B981;
+  }
+
+  .title-block {
+    background: rgba(6, 8, 11, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 24px 28px;
+    border-radius: 18px;
+    border: 1px solid rgba(216, 178, 106, 0.30);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
   }
 
   h1 {
     font-family: "Bricolage Grotesque", sans-serif;
     font-weight: 800;
-    font-size: 74px;
-    line-height: 0.94;
-    letter-spacing: -0.04em;
+    font-size: 46px;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
     color: #FFFFFF;
-    margin-bottom: 18px;
-  }
-
-  .role {
-    font-size: 26px;
-    font-weight: 600;
-    color: #D8B26A;
-    letter-spacing: -0.01em;
     margin-bottom: 8px;
   }
 
-  .org {
-    font-size: 20px;
-    font-weight: 500;
-    color: #94A3B8;
-    margin-bottom: 30px;
-  }
-
-  .pills {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 36px;
-  }
-  .pill {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 13px;
-    color: #CBD5E1;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    padding: 8px 15px;
-    border-radius: 999px;
-  }
-
-  .cta {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 14px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #94A3B8;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .cta span {
+  .role-line {
+    font-size: 19px;
+    font-weight: 600;
     color: #D8B26A;
-    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+
+  .org-line {
+    font-size: 15px;
+    font-weight: 500;
+    color: #CBD5E1;
+    letter-spacing: 0.02em;
   }
 </style>
 </head>
 <body>
-  <div class="photo-bg">
+  <div class="photo-container">
     <img src="../piemonte11-2-2.jpg" alt="Francesco Piemonte">
-    <div class="photo-gradient"></div>
+    <div class="vignette"></div>
   </div>
 
-  <div class="glow"></div>
-  <div class="grid"></div>
-  <div class="frame"></div>
+  <div class="ambient-glow"></div>
+  <div class="gold-frame"></div>
 
-  <div class="content">
-    <div class="badge-tag">Scheda Contatto Ufficiale</div>
-    <h1>Francesco<br>Piemonte</h1>
-    <p class="role">Presidente Nazionale</p>
-    <p class="org">MO.D.A.V.I. APS-RA · Salerno / Roma</p>
+  <div class="overlay-info">
+    <div class="badge-official">Biglietto Digitale</div>
 
-    <div class="pills">
-      <span class="pill">Politiche giovanili</span>
-      <span class="pill">Terzo settore</span>
-      <span class="pill">Fondi europei</span>
-    </div>
-
-    <div class="cta">
-      Tocca per salvare contatto <span>→</span>
+    <div class="title-block">
+      <h1>Francesco Piemonte</h1>
+      <p class="role-line">Presidente Nazionale</p>
+      <p class="org-line">MO.D.A.V.I. APS-RA</p>
     </div>
   </div>
 </body>
